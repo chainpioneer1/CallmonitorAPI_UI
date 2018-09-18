@@ -1,0 +1,463 @@
+.emp-name {
+    padding-left: 20px;
+    font-size: 1.3em;
+    font-weight: 500;
+  }
+  
+  .hide-overflow {
+    overflow: hidden;
+  }
+  
+  .cnt-name {
+    white-space: nowrap;
+    font-weight: 600;
+    color: grey;
+  }
+  
+  .cnt-number {
+    white-space: nowrap;
+    color: grey;
+    font-size: 0.75em;
+  }
+  
+  .incoming {
+    color: green;
+  }
+  
+  .outgoing {
+    color: goldenrod;
+  }
+  
+  .missed {
+    color: red;
+  }
+  
+  .call-history-list {
+    /* height: 70vh; */
+    overflow: auto;
+  }
+  
+  .call-history-date {
+    display: inline-flex;
+    align-items: baseline;
+  }
+  
+  
+  .fixed-dateRange {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  
+  /**Overview**/
+  
+  .overview-card{
+    padding:0px; 
+  }
+  .overview-card .card{
+    color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+  .card-green{
+    background-color: #00AC5C;
+  }
+  
+  .card-yellow{
+    background-color: #F5B723;
+  }
+  
+  .card-red{
+    background-color: #E5003F;
+  }
+
+  .card-blue{
+    background-color: #4c8efc;
+  }
+
+
+  
+  .table>tbody>tr {
+    /* box-shadow: 1px 0px 3px 0px; */   
+    box-shadow: 0 4px 8px 0 rgba(192, 192, 192, 0.2), 0 6px 20px 0 rgba(175, 175, 175, 0.19);
+    background-color: var(--tableBodyColor);
+  }
+  
+  .table>tbody>tr>td {
+    border-top: 0px;
+    vertical-align: middle;
+    white-space:nowrap;
+    color: #363636;
+    font-family: 'Source Sans Pro', sans-serif; 
+    font-size: 15px;
+  }
+  
+  .custom-table {
+    border-spacing: 0px 10px;
+    border-collapse: separate;
+    padding: 0px 15px;
+  }
+  .social .avatar{
+      height: 40px;
+      object-fit: cover;
+      border-radius: 100%
+  }
+  .green{
+      color: green!important;
+  }
+
+  .list-group{
+    padding: 9px;
+    overflow: hidden;
+  }
+  .center{
+    text-align: center
+  }
+
+  .pointer{
+    cursor: pointer;
+  }
+
+  .right{
+    text-align: right
+  }
+
+  .nopadding{
+    padding: 0px
+  }
+
+  .padding-10{
+    padding: 10px;
+  }
+
+  .marginTop-10{
+    margin-top: 10px;
+  }
+
+  .incoming{
+    color: #00AC5C;
+  }
+  
+  .outgoing{
+    color: #F5B723;
+  }
+  
+  .missed{
+    color: #E5003F;
+  }
+
+  .new{
+    color: #4c8efc;
+  }
+
+
+  .absolute-right-10{
+    position: absolute; right: 10px
+  }
+
+  .font16{
+    font-size: 16px
+  }
+  .font25{
+    font-size: 25px
+  }
+
+  .card-body{
+    padding: 0.25rem;
+  }
+
+  .card-body p{
+    display: inline-block;
+    margin-bottom: 0px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: calc(100% - 20px);
+  }
+
+  .ellipse{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .fullwidth{
+    width: 100%
+  }
+
+  .nomargin{
+    margin: 0px;
+  }
+
+  .incoming-color{
+    color: #19b769;
+  }
+  .outgoing-color{
+    color: #e09e27;
+  }
+
+  .card-body.dropdown ul li:hover{
+    cursor: pointer;
+    background: lightgray;
+  }
+
+  .card-body.dropdown ul li.active{
+    cursor: pointer;
+    background: lightgray;
+  }
+
+  .card-body.dropdown ul{
+    transform: translate3d(16px, 70px, 0px)!important;
+  }
+
+  .tabspan{
+    padding: 5px 20px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .tabspan.active{
+    border-bottom: 2px solid #3b90f8;
+    color: #3b90f8
+  }
+
+  .left{
+    text-align: left;
+  }
+
+  .card-fixed-height{
+    height: 700px;
+  }
+
+  .card-fixed-height .fixed-dateRange{
+    top: -9px;
+  }
+  .card-fixed-height ul{
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .week li{
+    padding: 3px
+  }
+
+  .bottom-tel span{
+    font-size: 12px;
+    max-width: 50px;
+  }
+
+  .badge{
+    position: absolute;
+    right: 18px;
+    bottom: -1px;
+    height: 16px;
+    padding: 3px;
+    border-radius: 15px;
+    z-index: 10;
+    color: white;
+  }
+
+  .relative{
+    position: relative;
+  }
+
+  .incoming-badge-color{
+    background: #19b769;
+  }
+  .outgoing-badge-color{
+    background: #111;
+  }
+
+  .bottom-time, .bottom-day{
+    text-align: center;
+    font-size: 12px;
+  }
+  .bottom-time img{
+    width: 12px;
+    height: 12px;
+  }
+  .bottom-day{
+    color: gray
+  }
+  
+  .list-group-flush .list-group-item{
+    border: 1px solid lightgrey!important;
+  }
+
+  .audioPlayer{
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 16px);
+  }
+
+  .list-group-item{
+    padding: 5px;
+  }
+
+  .employee-action .dropdown-menu{
+    top: -23px!important
+  }
+
+  .dropdown .periodselect{
+    width: 25px; height: 40px; float:right; padding: 10px
+  }
+
+  .periodselect:hover{
+    border-left: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    box-shadow: 0 .25rem .5rem rgba(0,0,0,.15);
+  }
+
+  .agreegation-menu .dropdown-menu{
+    left: auto!important;
+    right: 0px!important;
+  }
+
+  .agreegation-menu .dropdown-menu li{
+    padding: 0px 10px 0 40px
+  }
+
+  .agreegation-menu .dropdown-menu li span{
+    position: absolute;
+    left: 0px;
+    margin-left: 21px;
+    margin-top: 6px;
+    font-size: 12px;
+  }
+
+  .card-body{
+    color: white
+  }
+
+  .dropdown-menu li{
+    cursor: pointer;
+  }
+
+  .dropdown-menu li.disabled{
+    cursor: default;
+    opacity: .54;
+    pointer-events: none;
+  }
+
+  .overview-card .default .card-text, .overview-card .default .card-title{
+    background: white;
+    color: #222222;
+  }
+  
+
+  .hover-underline:hover{
+    text-decoration: underline!important;
+  }
+
+  p.hover-highlight{
+
+  }
+
+
+  .bottomborder{
+    border-bottom: 1px solid white!important;
+  }
+  
+  .bottomborder:hover{
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+  }
+  
+  .bottomborder .card-text{
+    font-size: 11px;
+  }
+
+  .card-green:hover{
+    background: #047541
+  }
+  .card-yellow:hover{
+    background-color: #d6a124
+  }
+  .card-red:hover{
+    background-color: #b90235
+  }
+  .card-blue:hover{
+    background-color: #2569da
+  }
+
+  .card-yellow .card-text, .card-yellow .card-title, .card-yellow span{
+    color: #111111!important;
+  }
+
+  .card-yellow .bottomborder{
+    border-bottom: 1px solid #111111!important;
+  }
+
+  input.daterange{
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+    padding-bottom: 8px;
+  }
+
+  .show-ranges{
+    left:0px!important;
+  }
+
+  input.daterange:focus{
+    box-shadow: none!important;
+  }
+
+
+select{
+  padding-right: 30px;
+}
+
+.axis .tick text{
+  display: none
+}
+
+.dropdown-menu li.active{
+ background-color: lightgray;
+}
+
+.dropdown-menu li{
+  cursor: pointer;
+}
+
+.barchart-category{
+  max-width: 100px;
+  padding: 2px;
+  margin-right: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid lightgray;
+
+}
+
+.barchart-category:hover{
+  border-left: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,.15);
+}
+
+.periodselect-label{
+  width: 50px;
+}
+
+.back{
+  color: #4c8efc
+}
+
+.call-count img{
+  margin-top: 0.3vh;
+  float: left;
+}
+.call-count span{
+  float: right;
+}
+
+.card-title{
+  margin-bottom: 0px;
+  height: 24px;
+}
+
+.legend-group .dropdown-menu{
+  margin-top: -17px;
+}

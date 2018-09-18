@@ -1,0 +1,13 @@
+<div id="chart-container">
+        <svg id="linechart" style="width: 100%; height: 300px" (window:resize)="onResize()" (window:load)="onLoad()"></svg>
+        <div *ngIf="!isDataExist" style="text-align: center; position: absolute; left: calc(50% - 29px); top: 40%">No Data</div>
+        <div *ngIf="isLoading" style="position: absolute; left: 0px; top: 0px; opacity: .7;width: 100%;height: 100%;">
+            <li class="list-group-item" style="height: 100%">
+                <div class="loader-container" style="height: 100%">
+                    <div class="item-1"></div>
+                    <div class="item-2"></div>
+                    <div class="item-3"></div>
+                </div>
+            </li>
+        </div>
+</div>

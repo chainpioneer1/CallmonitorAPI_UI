@@ -1,0 +1,100 @@
+<app-navbar></app-navbar>
+<div class="container-fluid table-condensed">
+
+  <div class="row">
+    <div class="title-content">
+      <h5>Customer List</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="table-content">
+      <table class="table">
+        <colgroup>
+          <col width="5%">
+          <col width="20%">
+          <col width="15%">
+          <col width="20%">
+          <col width="10%">
+          <col width="10%">
+          <col width="15%">
+          <col width="5%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="left">ID</th>
+            <th class="left">Email</th>
+            <th>Date of Creation</th>
+            <th>Current Subscription Recharge
+              <br>Date</th>
+            <th>Number of
+              <br>Active Monitoring</th>
+            <th>Seats Limit</th>
+            <th>Total Recordings</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngIf="isLoading">
+            <tr>
+              <td colspan="14">
+                <div class="loader-container">
+                  <div class="item-1"></div>
+                  <div class="item-2"></div>
+                  <div class="item-3"></div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!isLoading && employerList.length === 0">
+            <tr>
+              <td colspan="14">
+                No data found...
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!isLoading">
+            <tr *ngFor="let emp of employerList; let i = index">
+              <td class="left">{{i+1}}</td>
+              <td class="left">{{emp.username}}</td>
+              <td class="center">{{emp.created_at | date:'dd-MM-yyyy'}}</td>
+              <td class="center">{{emp.subscription_ends_at | date:'dd-MM-yyyy'}}</td>
+              <td class="center">{{emp.activecount}}</td>
+              <td class="center">{{emp.track_limit}}</td>
+              <td class="center">{{emp.totalduration | timestamp}}</td>
+              <td class="center">
+                <div class="dropdown employee-action">
+                  <a data-toggle="dropdown" style="cursor: pointer;">
+                    <b>...</b>
+                  </a>
+                  <ul class="dropdown-menu shadow">
+                    <li>Select Actions
+                      <span>
+                        <i class="fa fa-times"></i>
+                      </span>
+                    </li>
+                    <li>
+                      <a (click)="addSeat(emp.id)">Add 1 Seat</a>
+                    </li>
+                    <li>
+                      <a (click)="deleteSeat(emp.id)">Delete 1 Seat</a>
+                    </li>
+                    <li>
+                      <a (click)="deactivate(emp.id)">Deactivated</a>
+                    </li>
+                    <li>
+                      <a (click)="delete(emp.id)">Delete</a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+
+            </tr>
+
+
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

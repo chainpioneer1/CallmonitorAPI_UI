@@ -1,0 +1,224 @@
+/* :root {
+    --bodybackground: #f8f8f8;
+    --beige: #ffeead;
+    --yellow: #ffcc5c;
+    --navbarBackground: white;
+    --tableHeaderColor: lightgray;
+    --buttonColor: #4b74ff;
+} */
+
+
+/*classes*/
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+/*classes*/
+
+.signup-page {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+/*heading and logo styling*/
+.signup-page h1, h2 {
+    margin: 0;
+    text-align: center;
+}
+
+h1 > img {
+    margin: 0 auto;
+}
+h2 {
+    margin: 35px 0 55px;
+    color: #575757;
+}
+/*heading and logo styling*/
+
+/* nav bar styling */
+
+.navbar-default {
+    background-color: var(--navbarBackground)
+}
+
+.card {
+    background: var(--navbarBackground);
+    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(81, 81, 81, 0.19);
+}
+
+
+/* Hide the browser's default checkbox */
+
+/* Create a custom checkbox */
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+
+.container:hover input~.checkmark {
+    background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+
+.container input:checked~.checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+
+.container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.forgot {
+    padding-left: 30px;
+    margin-left: 1010px;
+}
+
+.forgot>u {
+    padding-top: 566px;
+}
+
+.card-body-login {
+    position: relative;
+    padding: 10px 0;
+}
+
+.card-body-login .form-group {
+    margin-bottom: 0;
+}
+
+.btn-signin {
+    position: absolute;
+    top: 35px;
+    right: -60px;
+    opacity: 1;
+    font-size: 18px;
+    padding: 12px 36px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 4px;
+    background-color: #4b74ff;
+    border-color: transparent;
+}
+
+.form-control {
+    border: 1px;
+    box-shadow: 0px 0px;
+    min-width: 90%;
+    width: 80%;
+}
+.signup-page input[type="email"], input[type="password"] {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+.signup-page input[type="email"] {
+    border-bottom: 1px solid #d6d6d6;
+}
+
+.card-footer {
+    margin: 30px 0 0;
+}
+.remember-me {
+    margin: 0 0 0 30px;
+    color: #686868;
+    font-size: 16px;
+    position: relative;
+}
+.custom-checkbox {
+    position: relative;
+}
+.custom-checkbox {
+    content: '';
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    position: absolute;
+    left: -25px;
+    top: 4px;
+    border: 1px solid #4b74ff;
+    border-radius: 4px;
+    transition: all 300ms linear;
+}
+.custom-checkbox:before {
+    content: "\f00c";
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    font-size: 13px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #fff;
+}
+.remember-me input {
+    display: none;
+}
+
+.remember-me input:checked ~ .custom-checkbox {
+    background-color: #4b74ff;
+} 
+
+.remember-me input:checked ~ .custom-checkbox:before {
+    opacity: 1;
+} 
+
+.forgot-password {
+    font-size: 16px;
+    color: #4a90e2;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.pull-left {
+    text-align: left
+}
+
+.pull-right{
+    text-align: right
+}
+.card-footer{
+    background-color: transparent
+}

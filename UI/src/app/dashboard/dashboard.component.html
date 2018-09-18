@@ -1,0 +1,122 @@
+<app-navbar></app-navbar>
+<div class="container-fluid table-condensed">
+    <div class="row">
+      <div class="col-md-6">
+          <h5 class="heading">Employee List </h5>  
+      </div>
+      <div class="col-md-6 search-block">
+       
+        <div style="margin-right: 7px;display: inline-block;position: relative;">
+          <b style="color: #acacac">From</b>
+          <i class="fa fa-calendar" style="position: relative; right: -30px;color: gray"></i>
+
+          <input class="form-control" #fDate bsDatepicker [(ngModel)]="fromDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px;margin-left: calc(0.3vw)" (ngModelChange)="onDateChange()">
+              <i class="fa fa-angle-down" style="position: absolute;right: 17px;top: 21px;"></i>
+        </div>
+        <b style="color: #acacac">To</b>
+        <div style="display: inline-block;position: relative;">
+          
+          <i class="fa fa-calendar" style="position: relative; right: -30px;color: gray"></i>
+
+          <input class="form-control" #fDate bsDatepicker [(ngModel)]="toDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px;margin-left: calc(0.3vw)" (ngModelChange)="onDateChange()">
+              <i class="fa fa-angle-down" style="position: absolute;right: 17px;top: 21px;"></i>
+        </div>
+
+      </div>
+    </div>
+    
+    <table class="table custom-table">
+        <thead>
+            <tr>
+                <th style="text-align: left">Employee</th>
+                <th>Status</th>
+                <th>Incoming
+                    <br/>Calls</th>
+                <th>Outgoing
+                    <br/>Calls</th>
+                <th>Missed
+                    <br/>Calls</th>
+                <th>Missed
+                    <br/>Calls(%)</th>
+                <th>Incoming
+                    <br/>Call Duration</th>
+                <th>Outgoing
+                    <br/>Call Duration</th>
+                <th>New
+                    <br/>Caller</th>
+                <th>New
+                    <br/>Caller(%)</th>
+                <th>Average
+                    <br>Incoming
+                    <br>Call Durations</th>
+                <th>Average
+                    <br>Outgoing
+                    <br>Call Durations</th>
+                <th>CallBack
+                    <br/>Delay</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngIf="isLoading">
+                <tr>
+                    <td colspan="14">
+                        <div class="loader-container">
+                            <div class="item-1"></div>
+                            <div class="item-2"></div>
+                            <div class="item-3"></div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="!isLoading && detailedEmployeeList.length === 0">
+                <tr>
+                    <td colspan="14">
+                        No data found...
+                    </td>
+                </tr>
+            </ng-container>
+            <ng-container *ngIf="!isLoading">
+                <tr *ngFor="let emp of detailedEmployeeList">
+                    <td style="text-align: left"><b>{{emp.name}}</b>
+                        <br>
+                        <div class="date">{{emp?.firstLogDate}}</div>
+                    </td>
+                    <td>
+                        <span class="badge" [ngClass]="{'badge2':emp.disabled === 1}">{{emp.disabled === 0 ? 'active' : 'deactivated'}}</span>
+                    </td>
+                    <td>{{emp?.incomingCalls?.count?.toString() || '...'}}</td>
+                    <td>{{emp?.outCalls?.count?.toString() || '...'}}</td>
+                    <td>{{emp?.missedCalls?.count?.toString() || '...'}}</td>
+                    <td>{{emp?.missedCalls?.count/emp.totalCount*100 | number : '1.2-2'}}<i *ngIf="emp?.missedCalls?.count">%</i></td>
+                    <td>{{emp?.incomingCalls?.sum?.toString() | timestamp}}</td>
+                    <td>{{emp?.outCalls?.sum?.toString() | timestamp}}</td>
+                    <td>{{emp?.newCalls?.count?.toString() || '...'}}</td>
+                    <td>{{emp?.newCalls?.count/emp.totalCount*100| number : '1.2-2'}}<i *ngIf="emp?.newCalls?.count">%</i></td>
+                    <td>{{emp?.incomingCalls?.average?.toString() | timestamp}}</td>
+                    <td>{{emp?.outCalls?.average?.toString() | timestamp}}</td>
+                    <td>{{emp?.callbackdelay | timestamp}}</td>
+                    <td>
+                        <div class="dropdown employee-action">
+                            <a data-toggle="dropdown" style="cursor: pointer;">
+                                <b>...</b>
+                            </a>
+                            <ul class="dropdown-menu shadow">
+                                <li>Choose Actions
+                                    <span>
+                                        <i class="fa fa-times"></i>
+                                    </span>
+                                </li>
+                                <li><a (click)="goToDetail(emp)">View Details</a></li>
+                                <li><a (click)="onDeactive(emp.id)">Deactivate</a></li>
+                                <li><a (click)="onDelete(emp.id)">Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,354 @@
+/* You can add global styles to this file, and also import other style files */
+
+/** root is common for all **/
+:root {
+    --bodysearchground:white;
+      /* --bodybackground: #F5F5FA; */
+      --bodybackground: #EFEFF8;
+      --beige: #ffeead;
+      --yellow: #ffcc5c;
+      --navbarBackground:white;
+      --tableHeaderColor: lightgray;
+      --tableBodyColor:white;
+    }
+  
+    html, body {
+      background: var(--bodybackground);
+      /* color: var(--red); */
+    }
+  
+    /* nav bar styling */
+    .navbar-brand {
+      height: 70px;
+    }
+  
+    .navbar-brand {
+      min-height: 70px;
+    }
+  
+    .navbar-brand>img {
+      max-height: 100%;
+  }
+  .navbar-default {
+    background-color: var(--navbarBackground)
+  }
+  
+
+  /**Code for loader**/
+  body {
+    /* overflow: hidden; */
+  }
+  
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    overflow: hidden;
+    animation-delay: 1s;
+  }
+  .item-1 {
+    width: 20px;
+    height: 20px;
+    background: #f583a1;
+    border-radius: 50%;
+    background-color: #eec368;
+    margin: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50%,
+      75% {
+      transform: scale(2.5);
+    }
+    78%, 100% {
+      opacity: 0;
+    }
+  }
+  .item-1:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #eec368;
+    opacity: 0.7;
+    animation: scale 2s infinite cubic-bezier(0, 0, 0.49, 1.02);
+    animation-delay: 600ms;
+    transition: 0.5s all ease;
+    transform: scale(1);
+  }
+  
+  .item-2 {
+    width: 20px;
+    height: 20px;
+    background: #f583a1;
+    border-radius: 50%;
+    background-color: #eead68;
+    margin: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50%,
+      75% {
+      transform: scale(2.5);
+    }
+    78%, 100% {
+      opacity: 0;
+    }
+  }
+  .item-2:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #eead68;
+    opacity: 0.7;
+    animation: scale 2s infinite cubic-bezier(0, 0, 0.49, 1.02);
+    animation-delay: 800ms;
+    transition: 0.5s all ease;
+    transform: scale(1);
+  }
+  
+  .item-3 {
+    width: 20px;
+    height: 20px;
+    background: #f583a1;
+    border-radius: 50%;
+    background-color: #ee8c68;
+    margin: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @keyframes scale {
+    0% {
+      transform: scale(1);
+    }
+    50%,
+      75% {
+      transform: scale(2.5);
+    }
+    78%, 100% {
+      opacity: 0;
+    }
+  }
+  .item-3:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ee8c68;
+    opacity: 0.7;
+    animation: scale 2s infinite cubic-bezier(0, 0, 0.49, 1.02);
+    animation-delay: 1000ms;
+    transition: 0.5s all ease;
+    transform: scale(1);
+  }
+  
+  .invalid-feedback {
+      display: block;
+  }
+
+  .shadow {
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         3px 3px 5px 6px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+  }
+
+  .bs-datepicker.theme-green{
+    -webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         3px 3px 5px 6px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    background: #eee;
+  }
+
+  .days.weeks thead{
+      background: greenyellow
+  }
+  .days.weeks thead>tr>th:first-child{
+      display: none
+  }
+  .days.weeks .week{
+      display: none;
+  }
+  .days.weeks td{
+    padding: 3px;
+    text-align: center
+  }
+
+  
+  .bs-datepicker-head{
+    margin-top: 3px;
+    text-align: center
+  }
+
+  .ngx-daterangepicker .input-section{
+    padding-right: 40px!important;
+    height: 32px!important;
+  }
+
+  .ngx-daterangepicker{
+    height: 32px!important;
+  }
+
+  .ngx-daterangepicker .calendar .side-container .side-container-buttons .side-button{
+    margin-bottom: 10px!important;
+  }
+
+  .md-drppicker .ltr .shown .double .show-ranges{
+    width: 250px!important;
+  }
+  .padding-20{
+    padding: 20px
+  }
+  .margintop10{
+    margin-top: 10px
+  }
+  .noborder-input{
+    border: none
+  }
+  .noborder-input:focus{
+    border: none!important;
+  }
+  input:focus{
+    border: none!important;
+  }
+  input.search::-webkit-input-placeholder{
+    color: gray;
+    font-size: 13px;
+  }
+
+  .pointer{
+    cursor: pointer; 
+  }
+
+  .uppercase{
+    text-transform: uppercase;
+  }
+
+  .inline-block{
+    display: inline-block;
+  }
+
+ ul.inline-block{
+  width: 100%;
+  list-style: none;
+  display: inline-flex;
+ }
+ .row.inline-block{
+   width: 100%
+ }
+
+ .list-group-item{
+   margin-bottom: 10px;
+ }
+
+ .row{
+   margin: 0px!important;
+ }
+
+ .container-fluid{
+   padding: 10px!important;
+ }
+
+
+ .col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+  padding-right: calc(0.3vw);
+  padding-left: calc(0.3vw);
+}
+
+.center{
+  text-align: center;
+}
+
+@media (min-width: 768px){
+  .list-group-item span{
+    font-size: calc(0.7vw)!important;
+  }
+  
+  .list-group-item i{
+    font-size: calc(0.7vw)!important;
+  }
+  
+  .list-group-item .fa{
+    font-size: calc(1.5vw)!important;
+  }
+  .callimg{
+    width: calc(0.8vw);
+    height: auto;
+  }
+  .list-group-item .avatar{
+    width: calc(2vw)!important;
+    height: calc(2vw)!important;
+    border-radius: 100%;
+  }
+}
+
+.player{
+  position: absolute;
+  top: calc(50% - 0.75vw);
+  right: calc(0.4vw);
+}
+
+
+.highcharts-xaxis-labels text{
+  display: none;
+}
+/* .highcharts-xaxis-labels text:first-child{
+  display: block;
+}
+.highcharts-xaxis-labels text:last-child{
+  display: block;
+} */
+
+select::-ms-expand {	display: none; }
+select{
+    -webkit-appearance: none;
+    appearance: none;
+}
+@-moz-document url-prefix(){
+	.ui-select{border: 1px solid #CCC; border-radius: 4px; box-sizing: border-box; position: relative; overflow: hidden;}
+  .ui-select select { width: 110%; background-position: right 30px center !important; border: none !important;}
+}
+.md-drppicker.show-ranges{
+  top: 0px!important;
+  right: 0px!important;
+  left: auto!important;
+}
+
+.hidden{
+  display: none;
+}
+.show{
+  display: block
+}
+
+th{
+  text-align: center
+}
+
+.ellipsis{
+  white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.employee-action .dropdown-menu{
+  left: auto!important;
+  right: calc(0px - 100%)!important;
+}
+
+.fa-angle-down{
+  color: gray;
+}

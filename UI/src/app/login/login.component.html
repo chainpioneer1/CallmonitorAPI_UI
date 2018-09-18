@@ -1,0 +1,48 @@
+<div class="signup-page">
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-6">
+        <alert></alert>
+        <h1 class="">
+          <img src="../../../assets/img/logo.png" alt="" class="mx-auto d-block rounded">
+        </h1>
+        <h2>Login To access Dashboard</h2>
+        <div class="card" align="center">
+          <div class="card-body card-body-login">
+            <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+              <div class="form-group">
+                <input type="email" class="form-control" formControlName="email"  placeholder="Email" required [ngClass]="{'is-invalid': submitted && f.email.errors}">
+                <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                    <div *ngIf="f.email.errors.required">Email is required</div>
+                    <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                </div>
+              </div>
+              <!-- <hr> -->
+              <div class="form-group">
+                  <input type="password" class="form-control" formControlName="password"  placeholder="password" required [ngClass]="{'is-invalid': submitted && f.password.errors}">
+                  <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                      <div *ngIf="f.password.errors.required">Password is required</div>
+                  </div>
+                </div>
+              <button type="submit" class="btn btn-signin btn-primary" >Sign In</button>
+            </form>
+          </div>
+        </div>
+        <div class="clearfix card-footer row">
+          <div class="pull-left col">
+            <label class="remember-me">Remember me 
+              <input type="checkbox" checked="checked">
+              <span class="custom-checkbox"></span>
+              <!-- <span class="checkmark"></span> -->
+            </label>
+          </div>
+          <div class="pull-right col">
+            <span class="forgot-password" routerLink='/forgot'>Forgot Password ?</span>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+</div>
+

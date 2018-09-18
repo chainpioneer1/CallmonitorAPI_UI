@@ -1,0 +1,788 @@
+<app-navbar isSearchShow="true"></app-navbar>
+
+<div style="margin-top: 10px; padding-top: 10px;">
+  <header>
+    <div class="navbar navbar-default" style="margin-top: -19px;">
+      <div class="container-fluid">
+        <div class="clearfix">
+          <div class="pull-left">
+            <span routerLink="/" class="back">
+              <i class="fa fa-long-arrow-left"></i> Back</span>
+            <span class="emp-name">{{employee.name}}</span>
+          </div>
+          <div class="pull-right">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+</div>
+<div class="container-fluid">
+  <div class="row" style="padding-top: 10px; padding-bottom: 10px">
+    <div class="col-md-3 col-sm-12 col-12">
+      <h6>Call History</h6>
+      <div class="card card-fixed-height">
+        <div class="row nomargin" style="padding-top: 10px;padding-bottom: 6px">
+          <div class="col-6 col-sm-6 col-md-6 call-history-date" style="padding-right: 0px">From
+            <input class="form-control" #fDate bsDatepicker [(ngModel)]="callFromDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px;margin-left: calc(0.3vw)" (ngModelChange)="onChangeCallHistoryDate()">
+            <!-- <input type="date" [(ngModel)]="callFromDate" (change)="onChangeCallHistoryDate()">   -->
+            <!-- <i *ngIf="callFromDate" (click)="callFromDate=null;onChangeCallHistoryDate()" class="fa fa-close" style="margin-left: -20px"></i> -->
+            <i class="fa fa-angle-down" style="position: absolute;right: 10px;top: 10px;"></i>
+          </div>
+          <div class="col-6 col-sm-6 col-md-6 call-history-date">To
+            <input class="form-control" #tDate="bsDatepicker" bsDatepicker [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="callToDate"
+              style="padding-right: 22px;margin-left: calc(0.3vw)" (ngModelChange)="onChangeCallHistoryDate()">
+            <!-- <i *ngIf="callToDate" (click)="callToDate=null;onChangeCallHistoryDate()" class="fa fa-close" style="margin-left: -20px"></i> -->
+            <i class="fa fa-angle-down" style="position: absolute;right: 15px;top: 10px;"></i>
+          </div>
+
+        </div>
+        <ul class="list-group list-group-flush call-history-list">
+
+          <ng-container *ngIf="isCallHistoryLoading">
+            <li class="list-group-item">
+              <div class="loader-container">
+                <div class="item-1"></div>
+                <div class="item-2"></div>
+                <div class="item-3"></div>
+              </div>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="!isCallHistoryLoading">
+            <li class="list-group-item" *ngFor="let ch of callHistoryList | slice:0:nCurCall, let i = index" (window:create)="setCurTitleDate(ch.date)">
+              <!-- <ul class="nopadding">
+                    <li *ngIf="callFromDate!==callToDate || !callFromDate">
+                      <div class="col-md-8">
+                          <span class="cnt-date">{{ch.date | date}}</span>  
+                      </div>
+                    </li>
+                    <li> -->
+              <div class="row">
+                <div class="col-1 col-sm-1 col-md-1">
+                  <img src="../../assets/img/incoming.png" *ngIf="ch.type===1" class="callimg" />
+                  <img src="../../assets/img/outgoing.png" *ngIf="ch.type===2" class="callimg" />
+                  <img src="../../assets/img/missed.png" *ngIf="ch.type===3" class="callimg" />
+                </div>
+                <div class="col-4 col-sm-4 col-md-4 hide-overflow" style="padding-right: 0px">
+                  <span class="cnt-name">{{ch.contactname || "Unknown number"}}</span>
+                  <br/>
+                  <span class="cnt-number">{{ch.logbooknumber}}</span>
+                </div>
+                <div class="col-2 col-md-2 col-sm-2" style="padding-right: 0px">
+                  <img src="../../assets/img/small-incoming.png" />
+                  <span class="incoming-color">{{ch.incomingCount}}</span>
+                  <br/>
+                  <img src="../../assets/img/small-outgoing.png" />
+                  <span class="outgoing-color">{{ch.outgoingCallCount}}</span>
+                </div>
+                <div class="col-3 col-md-3 col-sm-3" style="padding-right: 0px">
+                  <span class="cnt-name">{{ch.date | date}}</span>
+                  <br>
+                  <span class="cnt-name">{{ch.date | date:'hh:mm:ss aa'}}</span>
+
+                </div>
+                <div class="col-2 col-md-2 col-sm-2 center">
+                  <i class="fa fa-2x" *ngIf="!ch.recording" [ngClass]="{'fa-play-circle-o':currentPlayingIndex !== i || (currentPlayingIndex === i && isPaused),'fa-pause-circle-o':currentPlayingIndex === i && !isPaused}"
+                    (click)="playRecordedCall(ch.recording,i)" style="color: gray; pointer-events: none"></i>
+                  <i class="fa fa-2x" *ngIf="ch.recording" [ngClass]="{'fa-play-circle-o':currentPlayingIndex !== i || (currentPlayingIndex === i && isPaused),'fa-pause-circle-o':currentPlayingIndex === i && !isPaused}"
+                    (click)="playRecordedCall(ch.recording,i)" style="color: #4c8efc"></i>
+                  <br/>
+                  <span class="cnt-number">{{ch.duration}}</span>
+                </div>
+              </div>
+              <!-- </li>
+                  </ul>
+                   -->
+            </li>
+            <li class="list-group-item center" *ngIf="!iscallHistoryEnd && !isCallHistoryLoadmoreLoading">
+              <span class="pointer" (click)="loadMoreCallHistory()">Load More</span>
+            </li>
+            <li class="list-group-item center" *ngIf="isCallHistoryLoadmoreLoading">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="width: 100px; height: auto" />
+            </li>
+          </ng-container>
+        </ul>
+
+      </div>
+      <div class="row padding-10">
+        <div class="col-md-6 col-sm-6 col-12 left">
+          <h6 class="margintop10">Returning Callers</h6>
+        </div>
+        <div class="col-md-6 col-sm-6 col-12 right">
+          <div class="selectdiv">
+            <select class="form-control" style="background: transparent" [(ngModel)]="returnCallers" (ngModelChange)="onReturningCallChange()">
+              <option value="1">1 Week+</option>
+              <option value="2">2 Week+</option>
+              <option value="3">3 Week+</option>
+              <option value="6">6 Week+</option>
+              <option value="9">9 Week+</option>
+              <option value="12">1 Year+</option>
+            </select>
+            <span style="position: absolute;right: 17px;top:9px">
+              <i class="fa fa-angle-down" style="font-size: 22px"></i>
+            </span>
+          </div>
+
+        </div>
+      </div>
+      <div class="card padding-20">
+        <div class="row nomargin">
+          <div class="col-6 col-sm-6 col-md-6 left">
+            <small>Number of Calls</small>
+          </div>
+          <div class="col-6 col-sm-6 col-md-6 right">
+            <span class="incoming-color">
+              60 Callers(20%)
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-6 col-sm-12 col-12">
+      <div class="row">
+        <div class="col-6 col-sm-6 col-md-6">
+          <h4>Overview</h4>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-4 col-sm-4 col-md-4">
+          <div class="card col-md-12 card-green">
+            <div class="card-body">
+              <h5 class="card-title">{{employee.incomingCalls.count}}</h5>
+              <p class="card-text">Incoming Calls</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-md-4 col-sm-4">
+          <div class="card col-md-12 card-yellow">
+            <div class="card-body">
+              <h5 class="card-title">{{employee.outCalls.count}}</h5>
+              <p class="card-text">Outgoing Calls</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-4 col-sm-4 col-md-4">
+          <div class="card col-md-12 card-red">
+            <div class="card-body">
+              <h5 class="card-title">{{employee.missedCalls.count}}</h5>
+              <p class="card-text">Missed Calls</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 padding-10 marginTop-10">
+          <div class="row">
+            <div class="col-6 col-sm-6 col-md-3">
+              <h6>Interactive Chart</h6>
+            </div>
+            <div class="col-6 col-sm-6 col-md-9 right">
+              <!-- <ngx-daterangepicker [(ngModel)]="dateRange" [options]="options"></ngx-daterangepicker> -->
+              <!-- <a href="#" (click)="onTriggerDateRange($event)">click</a> -->
+              <input type="text" matInput ngxDaterangepickerMd [locale]="{applyLabel: 'ok', format: 'D MMM, YYYY'}" startKey="start" endKey="end"
+                [showCustomRangeLabel]="true" [showClearButton]="false" [alwaysShowCalendars]="true" [(ngModel)]="dateRange"
+                name="daterange" class="daterange" [ranges]="rangeOption" placeholder="Today" (change)="onDateRangeChanged()"
+                id="dateRangePicker" style="padding-right: 23px; font-size: 0.75vw;min-width: 159px" />
+              <i class="fa fa-angle-down" style="position: absolute;right: 10px;top: 7px;font-size: 22px"></i>
+            </div>
+          </div>
+        </div>
+        <div class="row fullwidth nomargin card" style="flex-direction: inherit;border-bottom: none">
+          <div class="col-11 col-md-11 col-sm-11">
+            <div class="row">
+              <div class="col-3 col-sm-3 col-md-3 overview-card pointer">
+                <div class="col-md-12" [ngClass]="{'card-green':firstItem.active,'default':!firstItem.active}">
+
+                  <div class="card-body dropdown legend-group">
+                    <h5 class="card-title" (click)="onLegendItemClick(firstItem)">{{formatLegendItemVal(firstItem.value, firstItem.unit)}}</h5>
+
+                    <a data-toggle="dropdown" class="bottomborder">
+                      <p class="card-text">{{firstItem.label}}</p>
+                      <span class="fa fa-caret-down pointer" style="margin-left: 5px;margin-right: 5px"></span>
+                    </a>
+
+                    <ul class="dropdown-menu shadow" style="padding: 10px">
+                      <li *ngFor="let item of dropdowns" class="ellipse" [ngClass]="{'active':firstItem.id===item.id}">
+                        <a (click)="firstItem.label=item.label;firstItem.id=item.id;
+                        firstItem.value=lineChartData.totalData[item.id];firstItem.unit=item.unit;onLegendItemChange()">{{item.label}}</a>
+                      </li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+              <div class="col-3 col-md-3 col-sm-3 overview-card pointer">
+                <div class="col-md-12" [ngClass]="{'card-yellow':secondItem.active,'default':!secondItem.active}">
+                  <div class="card-body dropdown legend-group">
+                    <h5 class="card-title" (click)="onLegendItemClick(secondItem)">{{formatLegendItemVal(secondItem.value, secondItem.unit)}}</h5>
+
+                    <a data-toggle="dropdown" class="bottomborder">
+                      <p class="card-text">{{secondItem.label}}</p>
+                      <span class="fa fa-caret-down pointer" style="margin-left: 5px;margin-right: 5px"></span>
+                    </a>
+
+                    <ul class="dropdown-menu shadow" style="padding: 10px">
+                      <li *ngFor="let item of dropdowns" class="ellipse" [ngClass]="{'active':secondItem.id===item.id}">
+                        <a (click)="secondItem.label=item.label;secondItem.id=item.id; 
+                        secondItem.value=lineChartData.totalData[item.id];secondItem.unit=item.unit;onLegendItemChange()">{{item.label}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-sm-3 col-md-3 overview-card pointer">
+                <div class="col-md-12" [ngClass]="{'card-red':thirdItem.active,'default':!thirdItem.active}">
+                  <div class="card-body  dropdown legend-group">
+                    <h5 class="card-title" (click)="onLegendItemClick(thirdItem)">{{formatLegendItemVal(thirdItem.value, thirdItem.unit)}}</h5>
+
+                    <a data-toggle="dropdown" class="bottomborder">
+                      <p class="card-text">{{thirdItem.label}}</p>
+                      <span class="fa fa-caret-down pointer" style="margin-left: 5px;margin-right: 5px"></span>
+                    </a>
+
+                    <ul class="dropdown-menu shadow" style="padding: 10px">
+                      <li *ngFor="let item of dropdowns" class="ellipse" [ngClass]="{'active':thirdItem.id===item.id}">
+                        <a (click)="thirdItem.label=item.label;thirdItem.id=item.id; 
+                        thirdItem.value=lineChartData.totalData[item.id];thirdItem.unit=item.unit; onLegendItemChange()">{{item.label}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-3 col-sm-3 col-md-3 overview-card pointer">
+                <div class="col-md-12" [ngClass]="{'card-blue':forthItem.active,'default':!forthItem.active}">
+                  <div class="card-body dropdown legend-group">
+                    <h5 class="card-title" (click)="onLegendItemClick(forthItem)">{{formatLegendItemVal(forthItem.value, forthItem.unit)}}</h5>
+
+                    <a data-toggle="dropdown" class="bottomborder">
+                      <p class="card-text">{{forthItem.label}}</p>
+                      <span class="fa fa-caret-down pointer" style="margin-left: 5px;margin-right: 5px"></span>
+                    </a>
+
+                    <ul class="dropdown-menu shadow" style="padding: 10px">
+                      <li *ngFor="let item of dropdowns" class="ellipse" [ngClass]="{'active':forthItem.id===item.id}">
+                        <a (click)="forthItem.label=item.label;forthItem.id=item.id; 
+                        forthItem.value=lineChartData.totalData[item.id];forthItem.unit=item.unit; onLegendItemChange()">{{item.label}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-1 col-sm-1 col-md-1 center nopadding">
+            <div class="dropdown agreegation-menu">
+              <a data-toggle="dropdown">
+                <div class="periodselect">
+                  <span class="fa fa-ellipsis-v"></span>
+                </div>
+              </a>
+
+              <ul class="dropdown-menu shadow padding-10">
+                <!---->
+                <li *ngFor="let p of periodList" [ngClass]="{'disabled': !p.enabled,'':p.enabled}" title="" (click)="onSetCurPeriod(p)">
+                  <span *ngIf="curLineChartPeriod===p.period" class="fa fa-check" aria-hidden="true"></span>{{p.label}}</li>
+
+              </ul>
+            </div>
+          </div>
+          <div class="relative-popup shadow">
+
+          </div>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-12 padding-10 card" style="border-top: none">
+          <div id="chartContainer" style="height: 300px; width: 100%;">
+            <!-- <app-multi-series-line-chart [categories]="[firstItem, secondItem, thirdItem, forthItem]"></app-multi-series-line-chart> -->
+            <app-multi-series-highchart></app-multi-series-highchart>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 marginTop-10 card nopadding">
+          <div class="row">
+            <div class="col-md-6 padding-10">
+              <span class="tabspan" [ngClass]="{'active': barcharttype==='day', '':barcharttype!=='day'}" (click)="barcharttype='day'">Day</span>
+              <span class="tabspan" [ngClass]="{'active': barcharttype==='hour', '':barcharttype!=='hour'}" (click)="barcharttype='hour'">Hour</span>
+            </div>
+            <div class="col-md-6 right">
+
+              <div class="dropdown agreegation-menu">
+                <a data-toggle="dropdown">
+                  <div class="category-select">
+                    <label class="barchart-category ellipsis">
+                      <span class="periodselect-label ellipsis" style="width: 50px;">{{categoryOfBarChart.label}}</span>
+                      <span class="fa fa-caret-down pointer" style="position: absolute; top: 7px;right: 0px;"></span>
+                    </label>
+
+                  </div>
+                </a>
+
+                <ul class="dropdown-menu shadow" style="padding: 10px">
+                  <li *ngFor="let item of dropdowns" [ngClass]="{'active':categoryOfBarChart.id===item.id}">
+                    <a (click)="categoryOfBarChart=item;onChangeCategoryOfHourly()">{{item.label}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+          <div id="barChart" style="height: 210px; width: 100%">
+            <app-bar-chart [show]="barcharttype==='day'"></app-bar-chart>
+            <app-vbar-chart [show]="barcharttype==='hour'"></app-vbar-chart>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-12 col-12">
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-6">
+          <h6>Social</h6>
+        </div>
+        <div class="col-md-6 col-sm-6 col-6 right" style="margin-bottom: 5px">
+          <div class="selectdiv">
+
+            <select class="form-control" style="background: transparent" [(ngModel)]="type" (ngModelChange)="onChangeSocialDate()">
+              <option value="topCallers">Most Calls</option>
+              <option value="totalDurations">Total Duration</option>
+              <!-- <option value="weeklydashboard">Weekly Dashboard</option> -->
+              <option value="averageDurations" selected>Average Duration</option>
+              <option value="specialCalls">Periodic Callers</option>
+              <option value="pastFriends">Past Friends</option>
+              <option value="ignoreres">Ignoreres</option>
+              <option value="friendliest">Friendlies</option>
+              <option value="forgotenCallers">Forgotten Calls</option>
+            </select>
+            <span style="position: absolute;right: 17px;top:11px">
+              <i class="fa fa-angle-down" style="font-size: 22px"></i>
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="card card-fixed-height">
+
+        <div class="row nomargin" style="padding: 10px" *ngIf="type==='totalDurations' || type==='averageDurations' || type==='topCallers'">
+          <div class="col-md-4 col-sm-4 col-4 call-history-date nopadding">
+            <input class="form-control" #fDate bsDatepicker [(ngModel)]="socialFromDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px; width: calc(100% - 15px)" (ngModelChange)="onChangeSocialDate()">
+
+            <!-- <i *ngIf="socialFromDate" (click)="socialFromDate=null;onChangeSocialDate()" class="fa fa-close" style="margin-left: -20px"></i> -->
+            <i class="fa fa-angle-down" style="margin-left: -20px"></i>
+          </div>
+          <div class="col-md-4 col-sm-4 col-4 call-history-date nopadding" style="margin-left: -10px">To
+            <input class="form-control" #tDate bsDatepicker [(ngModel)]="socialToDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px;margin-left: 5px" (ngModelChange)="onChangeSocialDate()">
+            <!-- <i *ngIf="socialToDate" (click)="socialToDate=null;onChangeSocialDate()" class="fa fa-close" style="margin-left: -20px"></i> -->
+            <i class="fa fa-angle-down" style="margin-left: -20px"></i>
+          </div>
+          <div class="col-md-4 col-sm-4 col-4 nopadding" style="padding-left: 10px">
+            <div class="selectdiv">
+              <select class="form-control" [(ngModel)]="subType" (ngModelChange)="onChangeSocialDate()">
+                <option value="1">Incoming</option>
+                <option value="2">Outgoing</option>
+                <!-- <option value="3">Missed</option> -->
+              </select>
+              <span style="position: absolute;right: 12px;top:6px">
+                <i class="fa fa-angle-down"></i>
+              </span>
+            </div>
+
+          </div>
+          <!-- <div class="col-md-1">
+                <i class="fa fa-search pointer" (click)="onSocialDateChange()"></i>
+              </div> -->
+        </div>
+
+        <div class="row nomargin" style="padding: 10px" *ngIf="type==='specialCalls'">
+          <div class="col-md-4 col-sm-4 col-4 call-history-date nopadding">
+            <input class="form-control" #fDate bsDatepicker [(ngModel)]="socialFromDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px; width: calc(100% - 15px)" (ngModelChange)="onChangeSocialDate()">
+
+            <!-- <i *ngIf="socialFromDate" (click)="socialFromDate=null;onChangeSocialDate()" class="fa fa-close" style="margin-left: -20px"></i> -->
+            <i class="fa fa-angle-down" style="margin-left: -20px"></i>
+          </div>
+          <div class="col-md-4 col-sm-4 col-4 call-history-date nopadding" style="margin-left: -10px">To
+            <input class="form-control" #tDate bsDatepicker [(ngModel)]="socialToDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px;margin-left: 5px" (ngModelChange)="onChangeSocialDate()">
+            <!-- <i *ngIf="socialToDate" (click)="socialToDate=null;onChangeSocialDate()" class="fa fa-close" style="margin-left: -20px"></i> -->
+            <i class="fa fa-angle-down" style="margin-left: -20px"></i>
+          </div>
+          <div class="col-md-4 col-sm-4 col-4 nopadding" style="padding-left: 10px">
+            <div class="selectdiv" style="margin-left: 5px">
+              <select class="form-control" [(ngModel)]="special_period" (ngModelChange)="onChangeSocialDate()">
+                <option value="3">3 days</option>
+                <option value="7">1 week</option>
+                <option value="14">2 week</option>
+                <option value="30">1 month</option>
+                <option value="60" selected>2 months</option>
+                <!-- <option value="3">Missed</option> -->
+              </select>
+              <span style="position: absolute;right: 12px;top:6px">
+                <i class="fa fa-angle-down"></i>
+              </span>
+            </div>
+
+          </div>
+          <!-- <div class="col-md-1">
+                  <i class="fa fa-search pointer" (click)="onSocialDateChange()"></i>
+                </div> -->
+        </div>
+
+        <!-- forgottenCallers -->
+
+        <div class="row nomargin" style="padding: 10px" *ngIf="type==='forgotenCallers' || type==='friendliest' || type==='ignoreres'">
+          <div class="col-md-6 col-sm-6 col-6 call-history-date">From&nbsp;
+            <input class="form-control" #fDate="bsDatepicker" bsDatepicker [(ngModel)]="socialFromDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px; width: calc(100% - 15px)" (ngModelChange)="onChangeSocialDate()">
+            <i *ngIf="socialFromDate" (click)="socialFromDate=null" class="fa fa-close" style="margin-left: -20px"></i>
+          </div>
+          <div class="col-md-6 col-sm-6 col-6 call-history-date">To
+            <input class="form-control" #tDate="bsDatepicker" bsDatepicker [(ngModel)]="socialToDate" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+              style="padding-right: 22px;margin-left: 5px" (ngModelChange)="onChangeSocialDate()">
+            <i *ngIf="socialToDate" (click)="socialToDate=null" class="fa fa-close" style="margin-left: -20px"></i>
+          </div>
+        </div>
+        <!-- forgottenCallers - end -->
+
+        <!-- past friends -->
+        <div class="row nomargin call-history-date" style="padding: 10px" *ngIf="type==='pastFriends'">
+          <div class="col-md-6 col-sm-6 col-6 left">
+            <label>Last Call</label>
+          </div>
+          <div class="col-md-6 col-sm-6 col-6 right">
+            <select class="form-control" [(ngModel)]="period" (ngModelChange)="onChangeSocialDate()">
+              <option value="1">1 month+</option>
+              <option value="2">2 month+</option>
+              <option value="3">3 month+</option>
+
+              <option value="6">6 month+</option>
+              <option value="9">9 month+</option>
+              <option value="12">1 year+</option>
+            </select>
+            <span style="position: absolute;right: 17px;top:6px">
+              <i class="fa fa-angle-down"></i>
+            </span>
+          </div>
+        </div>
+        <ul class="list-group list-group-flush call-history-list" *ngIf="type!=='weeklydashboard'">
+
+          <ng-container *ngIf="isSocialLoading">
+            <li class="list-group-item">
+              <div class="loader-container">
+                <div class="item-1"></div>
+                <div class="item-2"></div>
+                <div class="item-3"></div>
+              </div>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="!isSocialLoading">
+            <li class="list-group-item social" *ngFor="let ch of socialHistoryList| slice:0:nCurSocial, let i = index ">
+              <div class="row">
+                <div class="col-md-2 col-sm-2 col-2">
+                  <img [src]="!ch.photo?'../../assets/img/img_avatar.png':contact_photo_root_path+ch.photo" class="avatar">
+                </div>
+                <div class="col-md-5 col-sm-5 col-5 hide-overflow" style="padding-right: 0px">
+                  <span class="cnt-name">{{ch.name || "Unknown number"}}</span>
+                  <br/>
+                  <span class="cnt-number">{{ch.number}}</span>
+                </div>
+                <div class="col-md-5 col-sm-5 col-5" style="padding-right: 0px">
+                  <div *ngIf="type==='topCallers'" class="col-md-4 col-sm-4 col-4" style="float: right">
+                    <div class="call-count">
+                        
+                        <img src="../../assets/img/small-incoming.png" style="float: left" />
+                        <span class="incoming-color" style="float: right">
+                          {{ch.incomingtotalcalls}}
+                        </span>
+                    </div>
+                    <br>
+                    <div class="call-count">
+                        <img src="../../assets/img/small-outgoing.png" style="float: left"/>
+                        <span class="outgoing-color" style="float: right">
+                          {{ch.outgoingtotalcalls}}
+                        </span>
+                    </div>
+                    
+                  </div>
+
+                  <div *ngIf="type==='specialCalls'" class="col-4" style="float: right">
+                    <div class="call-count">
+                        <img src="../../assets/img/small-incoming.png" style="float: left" />
+
+                        <span class="incoming-color"  style="float: right">
+                          {{ch.income_count}}
+                        </span>
+                    </div>
+                    <br>
+                    <div class="call-count">
+                        <img src="../../assets/img/small-outgoing.png"  style="float: left"/>
+                        <span class="outgoing-color" style="float: right">
+                          {{ch.out_count}}
+                        </span>
+                    </div>
+                  </div>
+
+                  <div *ngIf="type==='totalDurations' || type==='averageDurations'" class="col-md-6 col-sm-6 col-6" style="float: right">
+                      <div class="call-count">
+                          <img src="../../assets/img/small-incoming.png" />
+                          <span class="incoming-color">
+                              {{ch.incomingtotalduration}}
+                          </span>
+                      </div>
+                      <br>
+                      <div class="call-count">
+                          <img src="../../assets/img/small-outgoing.png" />
+                          <span class="outgoing-color">
+                              {{ch.outgoingtalduration}}
+                          </span>      
+                      </div>
+                  </div>
+                  <div *ngIf="type==='pastFriends'" class="row">
+                    <div class="col-md-3">
+                      <div class="incoming-color">
+                        <img src="../../assets/img/small-incoming.png" />
+                        <span>{{ch.incomingCall}}</span>
+                      </div>
+                      <div class="outgoing-color">
+                        <img src="../../assets/img/small-outgoing.png" />
+                        <span>{{ch.outgoingCall}}</span>
+                      </div>
+
+                    </div>
+                    <div class="col-md-9 left" style="color: gray">
+                      <span>Last Call</span>
+                      <br>
+                      <span>{{ch.lastday}}</span>
+                      <br>
+                      <span>{{ch.lasttime}}</span>
+                    </div>
+
+                  </div>
+                  <div *ngIf="type==='forgotenCallers'" class="col-8" style="float: right">
+                    <div class="call-count">
+                        <img src="../../assets/img/missed.png">
+                        <span>{{ch.time}}</span>
+                    </div>
+                    <br>
+                    <div class="call-count">
+                        <span>{{ch.date}}</span>
+                    </div>
+                  </div>
+                  <div *ngIf="type==='friendliest'">
+                    <div style="height: 46px; width:46PX; border-radius: 100%; padding: 10px;border: 1px solid #19b769;text-align: center;float: right;display: inline-block">
+                      <span style="color: #19b769">{{getIncomvsOutgoing(ch.incomingCall, ch.outgoingCall)}}</span>
+                    </div>
+                    <div style="display: inline-block;float: right;margin-right: 10px">
+                      <div class="incoming-color">
+                        <img src="../../assets/img/small-incoming.png" />
+                        <span>{{ch.incomingCall}}</span>
+                      </div>
+                      <div class="outgoing-color">
+                        <img src="../../assets/img/small-outgoing.png" />
+                        <span>{{ch.outgoingCall}}</span>
+                      </div>
+
+                    </div>
+
+                    
+                  </div>
+
+                  <div *ngIf="type==='ignoreres'">
+                      <div style="height: 46px; width:46PX; border-radius: 100%; padding: 10px;border: 1px solid red;text-align: center;float: right;display: inline-block">
+                        <span style="color: red">{{getIncomvsOutgoing(ch.outgoingCall, ch.incomingCall)}}</span>
+                      </div>
+                      <div style="display: inline-block;float: right;margin-right: 10px">
+                        <div class="incoming-color">
+                          <img src="../../assets/img/small-incoming.png" />
+                          <span>{{ch.incomingCall}}</span>
+                        </div>
+                        <div class="outgoing-color">
+                          <img src="../../assets/img/small-outgoing.png" />
+                          <span>{{ch.outgoingCall}}</span>
+                        </div>
+  
+                      </div>
+  
+                      
+                    </div>
+                  
+                </div>
+
+              </div>
+            </li>
+            <li class="list-group-item center" *ngIf="!isSocialEnd && !isSocialLoadmoreLoading &&type!=='ignoreres' && type!=='friendliest'">
+              <span class="pointer" (click)="loadMoreSocial()">Load More</span>
+            </li>
+            <li class="list-group-item center" *ngIf="isSocialLoadmoreLoading">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="width: 100px; height: auto" />
+            </li>
+          </ng-container>
+        </ul>
+        <ul class="list-group call-history-list social" *ngIf="type==='weeklydashboard'">
+          <ng-container *ngIf="isSocialLoading">
+            <li class="list-group-item">
+              <div class="loader-container">
+                <div class="item-1"></div>
+                <div class="item-2"></div>
+                <div class="item-3"></div>
+              </div>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="!isSocialLoading">
+            <li class="padding-20">
+              <div class="row inline-block nomargin" *ngIf="socialHistoryList[0].incoming.length>0">
+                <img src="../../assets/img/incoming.png" />
+                <span class="uppercase"> Who called me the most</span>
+              </div>
+              <div class="row inline-block nomargin week">
+                <ul class="inline-block" style="width: 100%">
+                  <li *ngFor="let item of socialHistoryList[0].incoming">
+                    <div class="center relative">
+                      <img [src]="!item.photo?'../../assets/img/img_avatar.png':contact_photo_root_path+ch.photo" class="avatar"
+                      />
+                      <div class="badge incoming-badge-color">
+                        {{item.count}}
+                      </div>
+                    </div>
+                    <div class="bottom-tel  ellipse">
+                      <span>{{item.number}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="padding-20">
+              <div class="row inline-block nomargin" *ngIf="socialHistoryList[0].outgoing.length>0">
+                <img src="../../assets/img/outgoing.png" />
+                <span class="uppercase"> Who i called the most</span>
+              </div>
+              <div class="row inline-block nomargin week">
+                <ul class="inline-block" style="width: 100%">
+                  <li *ngFor="let item of socialHistoryList[0].outgoing">
+                    <div class="center relative">
+                      <img [src]="!item.photo?'../../assets/img/img_avatar.png':contact_photo_root_path+ch.photo" class="avatar"
+                      />
+                      <div class="badge outgoing-badge-color">
+                        {{item.count}}
+                      </div>
+                    </div>
+                    <div class="bottom-tel  ellipse">
+                      <span>{{item.number}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="padding-20">
+              <div class="row inline-block nomargin" *ngIf="socialHistoryList[0].most_duration.length>0">
+                <span class="fa fa-clock-o"></span>
+                <span class="uppercase"> most time spent</span>
+              </div>
+              <div class="row inline-block nomargin week">
+                <ul class="inline-block" style="width: 100%">
+                  <li *ngFor="let item of socialHistoryList[0].most_duration">
+                    <div class="center relative">
+                      <img [src]="!item.photo?'../../assets/img/img_avatar.png':contact_photo_root_path+ch.photo" class="avatar"
+                      />
+                      <!-- <div class="badge outgoing-badge-color">
+                              {{item.count}}
+                            </div> -->
+                    </div>
+                    <div class="bottom-tel  ellipse">
+                      <span>{{item.number}}</span>
+                    </div>
+                    <div class="bottom-time ellipse">
+                      <span class="fa fa-clock-o"> {{item.totalduration}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="padding-20">
+              <div class="row inline-block nomargin" *ngIf="socialHistoryList[0].most_calls.length>0">
+                <span class="fa fa-hourglass"></span>
+                <span class="uppercase"> longest calls</span>
+              </div>
+              <div class="row inline-block nomargin week">
+                <ul class="inline-block" style="width: 100%">
+                  <li *ngFor="let item of socialHistoryList[0].most_calls">
+                    <div class="center relative">
+                      <img [src]="!item.photo?'../../assets/img/img_avatar.png':contact_photo_root_path+ch.photo" class="avatar"
+                      />
+                      <!-- <div class="badge outgoing-badge-color">
+                                {{item.count}}
+                              </div> -->
+                    </div>
+                    <div class="bottom-tel  ellipse">
+                      <span>{{item.number}}</span>
+                    </div>
+                    <div class="bottom-time ellipse">
+                      <span>{{item.duration}}</span>
+                      <span>
+                        <img [src]="item.type===1?'../../assets/img/incoming.png':'../../assets/img/outgoing.png'">
+                      </span>
+                    </div>
+                    <div class="bottom-day ellipse">
+                      <span>{{item.day}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li class="padding-20">
+              <div class="row inline-block nomargin" *ngIf="socialHistoryList[0].most_forgot.length>0">
+                <i class="fa fa-warning" style="color:red"></i>
+                <span class="uppercase"> forgotten calls</span>
+              </div>
+              <div class="row inline-block nomargin week">
+                <ul class="inline-block" style="width: 100%">
+                  <li *ngFor="let item of socialHistoryList[0].most_forgot">
+                    <div class="center relative">
+                      <img [src]="!item.photo?'../../assets/img/img_avatar.png':contact_photo_root_path+ch.photo" class="avatar"
+                      />
+                      <!-- <div class="badge outgoing-badge-color">
+                                  {{item.count}}
+                                </div> -->
+                    </div>
+                    <div class="bottom-tel  ellipse">
+                      <span>{{item.number}}</span>
+                    </div>
+                    <div class="bottom-time ellipse">
+                      <span>{{item.time}}</span>
+                      <span>
+                        <img src="../../assets/img/missed.png">
+                      </span>
+                    </div>
+                    <div class="bottom-day ellipse">
+                      <span>{{item.day}}</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li *ngIf="socialHistoryList[0].incoming.length===0
+            &&socialHistoryList[0].outgoing.length===0
+            &&socialHistoryList[0].most_duration.length===0
+            &&socialHistoryList[0].most_calls.length===0
+            &&socialHistoryList[0].most_forgot.length===0">
+              <p style="position: absolute; top: 40%; left:calc(50% - 20px)">
+                No Data
+              </p>
+            </li>
+          </ng-container>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+<audio id="playAudio" [src]="audioSrc" type="audio/wav" autoplay></audio>

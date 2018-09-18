@@ -1,0 +1,13 @@
+.highcharts-axis-labels.highcharts-xaxis-labels text{
+    transform: "translate(0, 0) rotate(0 0)"
+}
+
+.highcharts-xaxis-labels text{
+    display: none;
+}
+.highcharts-xaxis-labels text:first-child{
+    display: block;
+}
+.highcharts-xaxis-labels text:last-child{
+    display: block;
+}

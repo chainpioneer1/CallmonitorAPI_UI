@@ -1,0 +1,268 @@
+<div class="home-page">
+    <header>
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="pull-left">
+                    <h1 class="logo">
+                        <a routerLink="/">
+                            <img src="../../assets/img/logo.png" alt="" class="img-responsive">
+                        </a>
+                    </h1>
+                </div>
+                <div class="pull-right">
+                    <ul class="user-details">
+                        <li *ngIf="isSearchShow">
+                            <span class="fa fa-search pointer" style="margin-right: 10px" (click)="onSearch()"></span>
+                            <input type="text" class="search noborder-input" [(ngModel)]="searchItemName" placeholder="Search e.g. employee name" style="color: gray"
+                                (click)="isShowUserList=!isShowUserList">
+                            <ul class="autocomplete shadow nopadding" *ngIf="searchUserList && isShowUserList" (blur)="isShowUserList=false">
+                                <li *ngFor="let user of searchUserList" class="ellipse" (click)="onSelectUser($event, user)">{{user.username}}</li>
+                            </ul>
+                            <!-- <form [formGroup]="form">
+                                <app-autocomplete class="search noborder-input" [searchText]="" formControlName="searchText">loading</app-autocomplete>
+                            </form> -->
+                        </li>
+                        <li>
+                            <div class="new-user-btn">
+                                <button class="btn btn-primary" (click)="submitted=false;openModal(template)">Add New User +</button>
+
+                            </div>
+                        </li>
+                        <li>
+                            <div class="setting dropdown">
+                                <i class="fa fa-cog fa-2x" style="color: gray; font-size: 20px" data-toggle="dropdown"></i>
+                                <ul class="dropdown-menu dropdown-menu-right shadow">
+                                    <li>
+                                        <a class="pointer" (click)="pwdSubmitted=false;openModal(pwdtemplate)">Change Password</a>
+                                    </li>
+                                    <li>
+                                        <a class="pointer" (click)="emailSubmitted=false;openModal(emailtemplate)">Change Email</a>
+                                    </li>
+                                    <li>
+                                        <a class="pointer" href="#">Delete Account</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li style="border: none">
+                            <div class="setting dropdown">
+                                <i data-toggle="dropdown">
+                                    <img src="../../assets/img/user.jpg" alt="" class="img-responsive" style="width: 40px; height: 40px;border-radius: 100%">
+                                </i>
+                                <ul class="dropdown-menu dropdown-menu-right shadow" style="width: 291px">
+                                    <li>
+                                        <p style="padding: 10px; text-align: center;margin-bottom: 0px;">
+                                            Hi
+                                            <span style="color: #4b74ff">{{currentUser.username}}</span>
+                                            <br> You are currently subscribed with {{currentUser.track_limit}} seat plan, your subscription renews on
+                                            {{currentUser.subscription_ends_at|date}}
+                                        </p>
+                                    </li>
+                                    <li style="cursor: pointer;text-align: right">
+                                        <a (click)="logout()">
+                                            <i class="fa fa-sign-out"></i> Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </header>
+</div>
+
+
+<nav class="navbar navbar-default" hidden>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img alt="Brand" src="../../assets/img/brand.svg">
+            </a>
+        </div>
+
+        <form class="form-inline md-form ">
+            <i class="fa fa-search iconi"></i>
+            <input class="form-control" type="text" placeholder="Search e.g employee.name" size="30">
+        </form>
+        <!-- <div class="md-form active-pink active-pink-2 mb-3">
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+      </div> -->
+        <div class="vr0"></div>
+        <span class="badge badge-primary float-right badge1 " style="background-color: blue;">Add New User +</span>
+
+        <div class="vr"></div>
+        <div class="dropdown ">
+            <a type="button" data-toggle="dropdown">
+                <span class="fa fa-cog fa-2x" style="color:lightgrey;"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="pointer" (click)="openModal(pwdtemplate)">Change Password</a>
+                </li>
+                <li>
+                    <a routerLink='/change-username'>Change Email</a>
+                </li>
+                <li>
+                    <a href="#">Delete Account</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="vr1"></div>
+        <img src="../../assets/img/img_avatar2.png" alt="Avatar" class="avatar">
+
+    </div>
+
+
+</nav>
+
+
+<ng-template #template>
+    <!-- <div class="modal-header"> -->
+
+    <!-- </div> -->
+    <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <alert *ngIf="submitted"></alert>
+        <img src="../../assets/img/logo.png" class="mx-auto d-block" style="margin-top: 20px">
+        <h4 class="text-center">Add New Users</h4>
+        <form [formGroup]="addNewUserForm" (ngSubmit)="onSubmit(addNewUserForm.value)" name="addNewUserForm">
+            <label for="username">User Name</label>
+            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                <div *ngIf="f.username.errors.required">User name is required</div>
+            </div>
+            <input placeholder="Username" formControlName="username" type="text" required [ngClass]="{'is-invalid': submitted && f.username.errors}">
+
+            <label>Employee Name</label>
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                <div *ngIf="f.name.errors.required">Name is required</div>
+            </div>
+            <input placeholder="employee" type="text" formControlName="name" required [ngClass]="{'is-invalid': submitted && f.name.errors}">
+
+
+            <label>Password</label>
+            <input placeholder="Password" type="password" formControlName="password">
+
+            <div class="right">
+                <div class="btn-group">
+                    <button type="submit" class="btn  modal-create">Create</button>
+                    <button type="button" class="btn btn-primary modal-button" (click)="modalRef.hide()">Close</button>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+
+</ng-template>
+
+<ng-template #pwdtemplate>
+    <!-- <div class="modal-header"> -->
+
+    <!-- </div> -->
+    <div class="modal-body">
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <alert *ngIf="pwdSubmitted"></alert>
+        <img src="../../assets/img/logo.png" class="mx-auto d-block" style="margin-top: 20px">
+        <h4 class="text-center">Change Password</h4>
+
+        <form [formGroup]="pwdForm" (ngSubmit)="onPwdSubmit()">
+            <!-- <div class="row">
+                <label>Current Password</label>
+            </div>
+
+            <div class="row">
+                <input type="password" value=""  formContrlName="curPassword" required class="form-control" placeholder="Current Password" 
+                [ngClass]="{'is-invalid': pwdSubmitted && pwd.curPassword.errors}">
+                <div *ngIf="pwdSubmitted && pwd.curPassword.errors" class="invalid-feedback">
+                    <div *ngIf="pwd.curPassword.errors.required">Current password is required</div>
+                </div>
+            </div> -->
+
+            <div class="row">
+                <label>Current Password</label>
+            </div>
+            <div class="row">
+                <input type="password" value="" formControlName="cur_password" required class="form-control" placeholder=""
+                    [ngClass]="{'is-invalid': pwdSubmitted && pwd.cur_password.errors}">
+                <div *ngIf="pwdSubmitted && pwd.cur_password.errors" class="invalid-feedback">
+                    <div *ngIf="pwd.cur_password.errors.required">Confirm password is required</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label>New Password</label>
+            </div>
+
+            <div class="row">
+                <input type="password" value="" formControlName="new_password" required class="form-control" placeholder="" [ngClass]="{'is-invalid': pwdSubmitted && pwd.new_password.errors}">
+                <div *ngIf="pwdSubmitted && pwd.new_password.errors" class="invalid-feedback">
+                    <div *ngIf="pwd.new_password.errors.required">New password is required</div>
+                </div>
+            </div>
+
+
+
+            <div class="row right" style="float: right">
+                <button type="submit" class="btn btn-primary" style="margin-right: 10px">
+                    <i class="fa fa-key"></i> Save</button>
+                <button class="btn btn-flat" type="reset"> Cancel</button>
+            </div>
+        </form>
+    </div>
+
+</ng-template>
+
+<ng-template #emailtemplate>
+        <!-- <div class="modal-header"> -->
+    
+        <!-- </div> -->
+        <div class="modal-body">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <alert *ngIf="emailSubmitted"></alert>
+            <img src="../../assets/img/logo.png" class="mx-auto d-block" style="margin-top: 20px">
+            <h4 class="text-center">Change Email</h4>
+    
+            <form [formGroup]="emailForm" (ngSubmit)="onEmailSubmit()">
+                
+                <div class="row">
+                    <label>Current Email</label>
+                </div>
+                <div class="row">
+                    <input type="text" value="" formControlName="cur_email" required class="form-control" placeholder=""
+                        [ngClass]="{'is-invalid': emailSubmitted && emailf.cur_email.errors}">
+                    <div *ngIf="emailSubmitted && emailf.cur_email.errors" class="invalid-feedback">
+                        <div *ngIf="emailf.cur_email.errors.required">Confirm password is required</div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <label>New Email</label>
+                </div>
+    
+                <div class="row">
+                    <input type="text" value="" formControlName="new_email" required class="form-control" placeholder="" [ngClass]="{'is-invalid': emailSubmitted && emailf.new_email.errors}">
+                    <div *ngIf="emailSubmitted && emailf.new_email.errors" class="invalid-feedback">
+                        <div *ngIf="emailf.new_email.errors.required">New password is required</div>
+                    </div>
+                </div>
+    
+    
+    
+                <div class="row right" style="float: right">
+                    <button type="submit" class="btn btn-primary" style="margin-right: 10px">
+                        <i class="fa fa-key"></i> Save</button>
+                    <button class="btn btn-flat" type="reset"> Cancel</button>
+                </div>
+            </form>
+        </div>
+    
+    </ng-template>

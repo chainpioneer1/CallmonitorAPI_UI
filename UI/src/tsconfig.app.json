@@ -1,0 +1,33 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "module": "es2015",
+    "types": []
+  },
+  "exclude": [
+    "src/test.ts",
+    "**/*.spec.ts"
+  ],
+  "include": [
+    "**/*.spec.ts",
+    "**/*.d.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/index.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.component.ts", 
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/constants.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.module.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-format.pipe.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.component.ngfactory.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.component.metadata.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.module.ngfactory.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.sass.shim.ngstyle.d.ts",
+    "./main.ts",
+    "./polyfills.ts"
+  ],
+  "files": [
+    "./app/app.module.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.component.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/ngx-daterangepicker.module.ts",
+    "../node_modules/ngx-daterangepicker/src/ngx-daterangepicker/constants.ts"
+  ]
+}
